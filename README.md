@@ -2,14 +2,14 @@
 
 A flexible task management web application built with Node.js, Express, and MongoDB. This project demonstrates CRUD operations, flexible document schemas, and MongoDB aggregation pipelines.
 
-## 🚀 Features
+## Features
 
-- ✅ **Complete CRUD Operations**: Create, Read, Update, Delete tasks
-- ✅ **Flexible Task Types**: Different fields based on task categories (work, personal, shopping, etc.)
-- ✅ **Advanced Filtering**: Search by title, filter by category and priority
-- ✅ **Statistics Dashboard**: Task counts, average priority, category breakdowns
-- ✅ **Responsive UI**: Bootstrap-based interface
-- ✅ **MongoDB Aggregation**: Statistics using MongoDB aggregation pipelines
+-  **Complete CRUD Operations**: Create, Read, Update, Delete tasks
+-  **Flexible Task Types**: Different fields based on task categories (work, personal, shopping, etc.)
+-  **Advanced Filtering**: Search by title, filter by category and priority
+-  **Statistics Dashboard**: Task counts, average priority, category breakdowns
+-  **Responsive UI**: Bootstrap-based interface
+-  **MongoDB Aggregation**: Statistics using MongoDB aggregation pipelines
 
 ## 🛠️ Technology Stack
 
@@ -198,14 +198,14 @@ task-planner/
 - **Error Handling**: Comprehensive error handling in both backend and frontend
 - **Responsive Design**: Bootstrap ensures the app works on all devices
 
-## 🔒 Security Considerations
+## Security Considerations
 
 - Input validation using Mongoose schemas
 - CORS enabled for local development
 - No authentication implemented (add as needed for production)
 - Environment variables for sensitive configuration
 
-## 🚀 Deployment
+## Deployment
 
 For production deployment:
 1. Set `NODE_ENV=production`
@@ -214,7 +214,7 @@ For production deployment:
 4. Consider adding authentication and authorization
 5. Set up proper logging and monitoring
 
-## 📝 Development Notes
+## Development Notes
 
 - Uses `strict: false` in Mongoose schema to allow flexible fields
 - Implements MongoDB aggregation for statistics
@@ -222,7 +222,7 @@ For production deployment:
 - Includes comprehensive error handling
 - Uses modern JavaScript (ES6+)
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
