@@ -120,7 +120,7 @@ async function addTask(event) {
     
     // Validate that title is not empty
     if (!title) {
-      alert('❌ Please enter a task title');
+      alert(' Please enter a task title');
       return;
     }
     
@@ -166,7 +166,7 @@ async function addTask(event) {
     
   } catch (error) {
     console.error('Error adding task:', error);
-    alert(`❌ Error adding task: ${error.message}`);
+    alert(` Error adding task: ${error.message}`);
   }
 }
 
@@ -241,7 +241,7 @@ async function updateTask(event, taskId) {
     
   } catch (error) {
     console.error('Error updating task:', error);
-    alert('❌ Error updating task. Please try again.');
+    alert(' Error updating task. Please try again.');
   }
 }
 
@@ -301,7 +301,7 @@ async function deleteTask(taskId) {
     
   } catch (error) {
     console.error('Error deleting task:', error);
-    alert('❌ Error deleting task. Please try again.');
+    alert(' Error deleting task. Please try again.');
   }
 }
 
