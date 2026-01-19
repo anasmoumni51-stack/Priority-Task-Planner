@@ -1,7 +1,4 @@
-// =====================================================
-// TASK PLANNER - NODE.JS BACKEND SERVER
-// Simple version for students with comments
-// =====================================================
+
 
 // Import required libraries
 const express = require('express');      // Web framework for Node.js
@@ -13,8 +10,7 @@ const Task = require('./models/Task');   // Import our Task model
 // Create Express application
 const app = express();
 
-// =========== MIDDLEWARE ===========
-// Middleware are functions that run for every request
+
 app.use(express.json());                 // Parse JSON data from requests
 app.use(express.static('public'));       // Serve static files from 'public' folder
 
@@ -181,5 +177,5 @@ const PORT = process.env.PORT || 3000;
 
 // Start listening for requests
 app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
+  console.log(` Server running at http://localhost:${PORT}`);
 });

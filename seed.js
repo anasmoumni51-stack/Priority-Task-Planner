@@ -9,11 +9,11 @@ async function seedDatabase() {
   try {
     // Connect to MongoDB
     await mongoose.connect(process.env.MONGODB_URI);
-    console.log('✅ Connected to MongoDB');
+    console.log(' Connected to MongoDB');
 
     // Clear existing data
     await Task.deleteMany({});
-    console.log('🧹 Cleared existing tasks');
+    console.log(' Cleared existing tasks');
 
     // Sample tasks demonstrating flexible schema
     const sampleTasks = [
@@ -117,10 +117,10 @@ async function seedDatabase() {
 
     // Insert sample data
     const insertedTasks = await Task.insertMany(sampleTasks);
-    console.log(`✅ Successfully seeded ${insertedTasks.length} tasks`);
+    console.log(` Successfully seeded ${insertedTasks.length} tasks`);
 
     // Display summary
-    console.log('\n📊 Sample Data Summary:');
+    console.log('\n Sample Data Summary:');
     console.log(`Total tasks: ${insertedTasks.length}`);
 
     const stats = await Task.aggregate([
@@ -141,14 +141,14 @@ async function seedDatabase() {
       console.log(`  ${stat._id}: ${stat.count} tasks (avg priority: ${stat.avgPriority.toFixed(1)})`);
     });
 
-    console.log('\n🎯 Sample data seeding completed!');
+    console.log('\n Sample data seeding completed!');
     console.log('You can now start the server with: npm start');
 
   } catch (error) {
-    console.error('❌ Error seeding database:', error);
+    console.error(' Error seeding database:', error);
   } finally {
     await mongoose.connection.close();
-    console.log('🔌 Database connection closed');
+    console.log(' Database connection closed');
   }
 }
 
