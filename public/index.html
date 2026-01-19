@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Planner - MongoDB Project</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .task-card { 
+            margin: 10px 0; 
+            padding: 15px; 
+            border-left: 5px solid #0d6efd;
+            background: #f8f9fa;
+        }
+        .high-priority { border-left-color: #dc3545; }
+        .medium-priority { border-left-color: #fd7e14; }
+        .low-priority { border-left-color: #198754; }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">📝 Task Planner with MongoDB</h1>
+        
+        <!-- Add Task Form -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5>Add New Task</h5>
+                <form id="taskForm">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="title" placeholder="Task Title" required>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="priority">
+                                <option value="1">Low Priority</option>
+                                <option value="2" selected>Medium Priority</option>
+                                <option value="3">High Priority</option>
+                                <option value="4">Urgent</option>
+                                <option value="5">Critical</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="category" placeholder="Category (work, personal)">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="date" class="form-control" id="deadline">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="project" placeholder="Project Name">
+                        </div>
+                        <div class="col-12">
+                            <textarea class="form-control" id="description" rows="2" placeholder="Description"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">Add Task</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5>Filter Tasks</h5>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Search tasks...">
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" id="categoryFilter">
+                            <option value="">All Categories</option>
+                            <option value="work">Work</option>
+                            <option value="personal">Personal</option>
+                            <option value="school">School</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" id="priorityFilter">
+                            <option value="">All Priorities</option>
+                            <option value="1">Low (1)</option>
+                            <option value="2">Medium (2)</option>
+                            <option value="3">High (3)</option>
+                            <option value="4">Urgent (4)</option>
+                            <option value="5">Critical (5)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card text-white bg-primary">
+                    <div class="card-body">
+                        <h5>Total Tasks</h5>
+                        <h2 id="totalTasks">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-warning">
+                    <div class="card-body">
+                        <h5>Avg Priority</h5>
+                        <h2 id="avgPriority">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-danger">
+                    <div class="card-body">
+                        <h5>High Priority</h5>
+                        <h2 id="highPriorityCount">0</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task List -->
+        <div class="card">
+            <div class="card-body">
+                <h5>Task List</h5>
+                <div id="taskList" class="mt-3">
+                    <!-- Tasks will be loaded here -->
+                    <p class="text-muted">Loading tasks...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Stats -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5>Tasks by Category</h5>
+                <div id="categoryStats"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
