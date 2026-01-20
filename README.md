@@ -1,6 +1,6 @@
 # Task Planner with MongoDB
 
-A flexible task management web application built with Node.js, Express, and MongoDB. This project demonstrates CRUD operations, flexible document schemas, and MongoDB aggregation pipelines.
+A task planner web application built with Node.js, Express, and MongoDB. This project demonstrates CRUD operations, flexible document schemas, and MongoDB aggregation pipelines.
 
 ## Features
 
@@ -11,37 +11,34 @@ A flexible task management web application built with Node.js, Express, and Mong
 -  **Responsive UI**: Bootstrap-based interface
 -  **MongoDB Aggregation**: Statistics using MongoDB aggregation pipelines
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 - **Backend**: Node.js + Express.js
-- **Database**: MongoDB with Mongoose ODM
+- **Database**: MongoDB with Mongoose
 - **Frontend**: Vanilla JavaScript + HTML + CSS + Bootstrap
 - **Environment**: dotenv for configuration
 
-## 📋 Prerequisites
+## Prerequisites
 
 - Node.js (v14 or higher)
 - MongoDB (v4.4 or higher)
 - npm or yarn
 
-## 🔧 Installation & Setup
+## Installation & Setup
 
 ### 1. Clone and Install Dependencies
-```bash
-git clone <your-repo-url>
+
+git clone https://github.com/anasmoumni51-stack/Priority-Task-Planner
 cd task-planner
 npm install
-```
+
 
 ### 2. MongoDB Setup
-```bash
-# Install MongoDB (macOS with Homebrew)
-brew install mongodb-community
-brew services start mongodb-community
 
-# Or start manually
+# Install MongoDB (macOS)
+brew install mongodb-atlas
 sudo mongod --dbpath /usr/local/var/mongodb
-```
+
 
 ### 3. Environment Configuration
 Create a `.env` file in the root directory:
@@ -51,18 +48,18 @@ PORT=3000
 ```
 
 ### 4. Start the Application
-```bash
+
 # Development mode (with auto-restart)
 npm run dev
 
 # Production mode
 npm start
-```
+
 
 ### 5. Access the Application
 Open your browser and navigate to: `http://localhost:3000`
 
-## 📊 Database Schema & Structure
+## Database Schema & Structure
 
 ### Tasks Collection
 The application uses a flexible MongoDB document schema that allows different fields based on task type:
@@ -134,7 +131,7 @@ db.tasks.aggregate([
 ])
 ```
 
-## 🧪 Sample Data
+## Sample Data
 
 Run this to seed your database with sample tasks:
 
@@ -176,7 +173,7 @@ const sampleTasks = [
 ];
 ```
 
-## 🏗️ Project Architecture
+## Project Architecture
 
 ```
 task-planner/
@@ -198,12 +195,6 @@ task-planner/
 - **Error Handling**: Comprehensive error handling in both backend and frontend
 - **Responsive Design**: Bootstrap ensures the app works on all devices
 
-## Security Considerations
-
-- Input validation using Mongoose schemas
-- CORS enabled for local development
-- No authentication implemented (add as needed for production)
-- Environment variables for sensitive configuration
 
 ## Deployment
 
@@ -221,15 +212,3 @@ For production deployment:
 - Follows Express.js best practices
 - Includes comprehensive error handling
 - Uses modern JavaScript (ES6+)
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License.
