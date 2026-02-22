@@ -1,7 +1,5 @@
-const { required } = require('joi');
 const mongoose = require('mongoose');
 
-// Define a schema for tasks (like a blueprint)
 // Using strict: false to allow flexible fields for different task types
 const TaskSchema = new mongoose.Schema({
   title: {
@@ -38,14 +36,11 @@ const TaskSchema = new mongoose.Schema({
   }
 }, { 
   strict: false, // Allow additional fields for flexibility
-  timestamps: true // Adds createdAt and updatedAt automatically
+  timestamps: true // Adds createdAt and updatedAt
 });
 
 
 
-// Create a Task model based on the schema
-// This represents a collection in MongoDB called 'tasks'
 const Task = mongoose.model('Task', TaskSchema);
 
-// Export the model so we can use it in other files
 module.exports = Task;
