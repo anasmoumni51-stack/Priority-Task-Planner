@@ -3,19 +3,18 @@
 
 const mongoose = require('mongoose');
 require('dotenv').config();
-const Task = require('../models/Task');
+const Task = require('./models/Task');
 
 async function seedDatabase() {
   try {
-    // Connect to MongoDB
+    
     await mongoose.connect(process.env.MONGODB_URI);
     console.log(' Connected to MongoDB');
 
-    // Clear existing data
     await Task.deleteMany({});
     console.log(' Cleared existing tasks');
 
-    // Sample tasks demonstrating flexible schema
+    // Sample tasks schema
     const sampleTasks = [
       {
         title: "Complete project proposal",
@@ -152,5 +151,5 @@ async function seedDatabase() {
   }
 }
 
-// Run the seeding function
+
 seedDatabase();

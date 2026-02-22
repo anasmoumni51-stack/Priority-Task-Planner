@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
     // Get tasks from database using the filter
     const tasks = await Task.find(filter);
     
-    // Send tasks as JSON response
+    
     res.send(tasks);
     
   } catch (error) {
@@ -47,13 +47,13 @@ router.post('/', async (req, res) => {
     const { error } = validateTask(req.body);
     if (error) return res.status(400).send({ error: error.details[0].message });
     
-    // Add creation date
+   
     task.createdAt = new Date();
     
-    // Save to database
+    
     await task.save();
     
-    // Send created task as response (status 201 = created)
+  
     res.status(201).send(task);
     
   } catch (error) {
@@ -62,26 +62,26 @@ router.post('/', async (req, res) => {
   }
 });
 
-// 3. UPDATE TASK
+
 router.put('/:id', async (req, res) => {
   try {
 
     const taskId = req.params.id;
     
-    // Validate task data
+    
     const { error } = validateTask(req.body);
     if (error) return res.status(400).send({ error: error.details[0].message });
     
-    // Find and update task by ID
+    
     const task = await Task.findByIdAndUpdate(taskId, req.body, { 
       new: true, // Return updated document
       runValidators: true // Run validation on update
     });
     
-    // If task not found, return 404 error
+    
     if (!task) return res.status(404).json({ error: 'Task not found' });
     
-    // Send updated task as response
+    
     res.json(task);
     
   } catch (error) {
