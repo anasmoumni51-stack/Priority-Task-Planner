@@ -27,16 +27,17 @@ A task planner web application built with Node.js, Express, and MongoDB. This pr
 ## Installation & Setup
 
 ### 1. Clone and Install Dependencies
-
 git clone https://github.com/anasmoumni51-stack/Priority-Task-Planner
+
 cd task-planner
+
 npm install
 
 
 ### 2. MongoDB Setup
-
 # Install MongoDB (macOS)
 brew install mongodb-atlas
+
 sudo mongod --dbpath /usr/local/var/mongodb
 
 

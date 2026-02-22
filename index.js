@@ -1,32 +1,29 @@
 
 
-// Import required libraries
-const express = require('express');      // Web framework for Node.js
-const mongoose = require('mongoose');    // MongoDB library
-const path = require('path');            // To work with file paths
-require('dotenv').config();              // Load environment variables from .env file
-const Task = require('./models/Task');   // Import our Task model
+const express = require('express');      
+const mongoose = require('mongoose');    
+const path = require('path');            
+require('dotenv').config();              
+const Task = require('./models/Task');
 
-// Create Express application
+
 const app = express();
 
 
-app.use(express.json());                 // Parse JSON data from requests
-app.use(express.static('public'));       // Serve static files from 'public' folder
+app.use(express.json());                 
+app.use(express.static('public'));
 
-// =========== DATABASE CONNECTION ===========
+
 // Connect to MongoDB database
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/taskplanner')
   .then(() => console.log(' Connected to MongoDB'))
   .catch(err => console.error(' MongoDB error:', err));
 
-// =========== API ROUTES ===========
-// These endpoints allow frontend to interact with database
 
-// 1. GET ALL TASKS (with optional filtering)
+
 app.get('/api/tasks', async (req, res) => {
   try {
-    // Start with empty filter
+    
     let filter = {};
     
     // If user provided category filter, add to filter
@@ -56,7 +53,7 @@ app.get('/api/tasks', async (req, res) => {
   }
 });
 
-// 2. CREATE NEW TASK
+
 app.post('/api/tasks', async (req, res) => {
   try {
     // Create new task from request body
@@ -171,8 +168,8 @@ app.get('/api/stats', async (req, res) => {
   }
 });
 
-// =========== START SERVER ===========
-// Set port number (use environment variable or default to 3000)
+
+
 const PORT = process.env.PORT || 3000;
 
 // Start listening for requests

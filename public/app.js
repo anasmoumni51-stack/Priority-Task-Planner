@@ -159,7 +159,7 @@ async function addTask(event) {
     document.getElementById('taskForm').reset();
     
     // Show success message (simple alert for now)
-    alert('✅ Task added successfully!');
+    alert(' Task added successfully!');
     
     // Reload tasks to show new task
     loadTasks();
@@ -235,7 +235,7 @@ async function updateTask(event, taskId) {
       throw new Error('Failed to update task');
     }
     
-    alert('✅ Task updated successfully!');
+    alert(' Task updated successfully!');
     resetForm();
     loadTasks();
     
