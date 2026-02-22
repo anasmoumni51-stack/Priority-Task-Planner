@@ -1,215 +1,195 @@
-# Task Planner with MongoDB
+# 📝 Task Planner with MongoDB
 
-A task planner web application built with Node.js, Express, and MongoDB. This project demonstrates CRUD operations, flexible document schemas, and MongoDB aggregation pipelines.
+A task planner web application built with **Node.js, Express, and MongoDB**. Features a modular architecture with separated routes, middleware, input validation (Joi), and Docker support.
 
 ## Features
 
--  **Complete CRUD Operations**: Create, Read, Update, Delete tasks
--  **Flexible Task Types**: Different fields based on task categories (work, personal, shopping, etc.)
--  **Advanced Filtering**: Search by title, filter by category and priority
--  **Statistics Dashboard**: Task counts, average priority, category breakdowns
--  **Responsive UI**: Bootstrap-based interface
--  **MongoDB Aggregation**: Statistics using MongoDB aggregation pipelines
+- **Complete CRUD Operations**: Create, Read, Update, Delete tasks
+- **Input Validation**: Joi schema validation for all task inputs
+- **Category Selector**: Dropdown with predefined categories (work, personal, shopping, health, education, home, other)
+- **Deadline Tracking**: Required deadline date with remaining days urgency indicator
+- **Advanced Filtering**: Search by title, filter by category and priority
+- **Statistics Dashboard**: Task counts, average priority, category breakdowns
+- **Error Handling Middleware**: Centralized error handling
+- **Dockerized**: Full Docker + Docker Compose setup for easy deployment
+- **Responsive UI**: Bootstrap-based interface
 
 ## Technology Stack
 
-- **Backend**: Node.js + Express.js
-- **Database**: MongoDB with Mongoose
-- **Frontend**: Vanilla JavaScript + HTML + CSS + Bootstrap
-- **Environment**: dotenv for configuration
-
-## Prerequisites
-
-- Node.js (v14 or higher)
-- MongoDB (v4.4 or higher)
-- npm or yarn
-
-## Installation & Setup
-
-### 1. Clone and Install Dependencies
-git clone https://github.com/anasmoumni51-stack/Priority-Task-Planner
-
-cd task-planner
-
-npm install
-
-
-### 2. MongoDB Setup
-# Install MongoDB (macOS)
-brew install mongodb-atlas
-
-sudo mongod --dbpath /usr/local/var/mongodb
-
-
-### 3. Environment Configuration
-Create a `.env` file in the root directory:
-```env
-MONGODB_URI=mongodb://localhost:27017/taskplanner
-PORT=3000
-```
-
-### 4. Start the Application
-
-# Development mode (with auto-restart)
-npm run dev
-
-# Production mode
-npm start
-
-
-### 5. Access the Application
-Open your browser and navigate to: `http://localhost:3000`
-
-## Database Schema & Structure
-
-### Tasks Collection
-The application uses a flexible MongoDB document schema that allows different fields based on task type:
-
-```javascript
-{
-  _id: ObjectId,
-  title: String (required),
-  description: String,
-  priority: Number (1-5),
-  category: String,
-  project: String,
-  deadline: Date,
-  taskType: String (enum: work|personal|shopping|health|education),
-  createdAt: Date,
-  updatedAt: Date,
-  // Additional flexible fields based on task type:
-  // - Work tasks: assignedTo, estimatedHours, tags
-  // - Shopping: items[], store, budget
-  // - Health: doctorName, appointmentTime, symptoms
-  // etc.
-}
-```
-
-### Indexes
-- Default MongoDB `_id` index
-- Compound index on `category` and `priority` for efficient filtering
-- Text index on `title` and `description` for search functionality
-
-## 🔍 API Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/tasks` | Get all tasks (with optional filtering) |
-| POST | `/api/tasks` | Create a new task |
-| PUT | `/api/tasks/:id` | Update an existing task |
-| DELETE | `/api/tasks/:id` | Delete a task |
-| GET | `/api/stats` | Get task statistics |
-
-### Query Parameters for GET /api/tasks
-- `search`: Search in title/description
-- `category`: Filter by category
-- `priority`: Filter by priority level
-
-## 📈 Aggregation Examples
-
-The statistics endpoint uses MongoDB aggregation pipelines:
-
-```javascript
-// Total tasks and average priority
-db.tasks.aggregate([
-  {
-    $group: {
-      _id: null,
-      totalTasks: { $sum: 1 },
-      avgPriority: { $avg: "$priority" }
-    }
-  }
-])
-
-// Tasks by category
-db.tasks.aggregate([
-  {
-    $group: {
-      _id: "$category",
-      count: { $sum: 1 }
-    }
-  }
-])
-```
-
-## Sample Data
-
-Run this to seed your database with sample tasks:
-
-```javascript
-// In MongoDB shell or via your application
-const sampleTasks = [
-  {
-    title: "Complete project proposal",
-    description: "Write and submit Q1 project proposal",
-    priority: 4,
-    category: "work",
-    taskType: "work",
-    project: "Q1 Planning",
-    deadline: new Date("2026-02-01"),
-    assignedTo: "John Doe",
-    estimatedHours: 8,
-    tags: ["urgent", "planning"]
-  },
-  {
-    title: "Buy groceries",
-    description: "Weekly grocery shopping",
-    priority: 2,
-    category: "personal",
-    taskType: "shopping",
-    items: ["milk", "bread", "eggs"],
-    store: "Whole Foods",
-    budget: 50
-  },
-  {
-    title: "Doctor appointment",
-    description: "Annual checkup",
-    priority: 3,
-    category: "health",
-    taskType: "health",
-    doctorName: "Dr. Smith",
-    appointmentTime: "10:00 AM",
-    symptoms: []
-  }
-];
-```
+| Layer | Technology |
+|-------|-----------|
+| **Backend** | Node.js + Express.js |
+| **Database** | MongoDB + Mongoose |
+| **Validation** | Joi |
+| **Frontend** | Vanilla JavaScript + HTML + Bootstrap |
+| **Environment** | dotenv |
+| **Containerization** | Docker + Docker Compose |
+| **Dev Tools** | Nodemon | config
 
 ## Project Architecture
 
 ```
 task-planner/
 ├── models/
-│   └── Task.js          # Mongoose schema definition
+│   ├── Task.js              # Mongoose Task schema
+│   └── User.js              # Mongoose User schema (WIP)
+├── routes/
+│   ├── tasks.js             # Task CRUD routes
+│   └── stats.js             # Statistics routes
+├── middleware/
+│   └── error.js             # Error handling middleware
+├── validators/
+│   └── TaskValidator.js     # Joi validation for tasks
 ├── public/
-│   ├── index.html       # Main UI
-│   └── app.js           # Frontend logic
-├── index.js             # Express server & API routes
-├── package.json         # Dependencies & scripts
-├── .env                 # Environment variables
-└── README.md           # This file
+│   ├── index.html           # Main UI
+│   └── app.js               # Frontend logic
+├── index.js                 # Express server entry point
+├── package.json             # Dependencies & scripts
+├── Dockerfile               # Docker image blueprint
+├── docker-compose.yml       # Docker orchestration (app + MongoDB)
+├── .dockerignore            # Files excluded from Docker
+├── .env                     # Environment variables
+└── .gitignore               # Files excluded from Git
 ```
 
-### Architecture Decisions
-- **Separation of Concerns**: Backend API, database models, and frontend logic are clearly separated
-- **RESTful API**: Standard HTTP methods for CRUD operations
-- **Flexible Schema**: MongoDB's document model allows different task types with varying fields
-- **Error Handling**: Comprehensive error handling in both backend and frontend
-- **Responsive Design**: Bootstrap ensures the app works on all devices
+## Prerequisites
 
+- Node.js (v18 or higher)
+- MongoDB (v7 or higher) **or** Docker Desktop
+- npm
 
-## Deployment
+## Installation & Setup
 
-For production deployment:
-1. Set `NODE_ENV=production`
-2. Use a production MongoDB instance (MongoDB Atlas, etc.)
-3. Configure proper environment variables
-4. Consider adding authentication and authorization
-5. Set up proper logging and monitoring
+### Option 1: Local Setup
 
-## Development Notes
+**1. Clone and install dependencies**
+```bash
+git clone https://github.com/anasmoumni51-stack/Priority-Task-Planner
+cd Priority-Task-Planner
+npm install
+```
 
-- Uses `strict: false` in Mongoose schema to allow flexible fields
-- Implements MongoDB aggregation for statistics
-- Follows Express.js best practices
-- Includes comprehensive error handling
-- Uses modern JavaScript (ES6+)
+**2. Environment configuration**
+
+Create a `.env` file in the root directory:
+```env
+MONGODB_URI=mongodb://localhost:27017/taskplanner
+PORT=3000
+```
+
+**3. Start the application**
+```bash
+# Development mode (auto-restart with Nodemon)
+npm run dev
+
+# Production mode
+npm start
+```
+
+### Option 2: Docker Setup
+
+Make sure Docker Desktop is running, then:
+```bash
+# Build and start containers
+docker compose up --build
+
+# Run in background
+docker compose up -d --build
+
+# Stop containers
+docker compose down
+
+# Stop and delete data
+docker compose down -v
+```
+
+**4. Access the application**
+
+Open your browser: `http://localhost:3000`
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/tasks` | Get all tasks (with optional filtering) |
+| POST | `/api/tasks` | Create a new task (Joi validated) |
+| PUT | `/api/tasks/:id` | Update an existing task |
+| DELETE | `/api/tasks/:id` | Delete a task |
+| GET | `/api/stats` | Get task statistics |
+
+### Query Parameters for GET /api/tasks
+
+| Parameter | Description |
+|-----------|-------------|
+| `search` | Search in title (case-insensitive) |
+| `category` | Filter by category |
+| `priority` | Filter by priority level (1-5) |
+
+## Database Schema
+
+### Task Model
+```javascript
+{
+  title:       String    (required, trimmed),
+  description: String    (trimmed),
+  priority:    Number    (1-5, default: 2),
+  category:    String    (trimmed),
+  deadline:    Date      (required),
+  taskType:    String    (enum: work|personal|shopping|health|education|home|other),
+  createdAt:   Date,
+  updatedAt:   Date
+}
+```
+
+### Joi Validation (TaskValidator)
+```javascript
+{
+  title:       string().min(3).max(50).required(),
+  description: string().max(500).allow(''),
+  priority:    number().integer().min(1).max(5),
+  category:    string().allow(''),
+  deadline:    date(),
+  taskType:    string().valid('work','personal','shopping','health','education','home','other').lowercase()
+}
+```
+
+## Middleware
+
+- **Error Handler** (`middleware/error.js`): Catches all unhandled errors and returns a 500 response
+- Routes are mounted as Express middleware in `index.js`:
+```javascript
+app.use('/api/tasks', tasks);
+app.use('/api/stats', stats);
+app.use(errorHandler);
+```
+
+## Frontend Features
+
+- **Urgency Indicator**: Color-coded badges showing remaining days
+  - 🔴 Red: Overdue / Today / 3 days or less
+  - 🟡 Yellow: 4-7 days
+  - 🟢 Green: 8+ days
+- **Category Dropdown**: Mapped to schema enum values
+- **Priority Selector**: 5 levels (Low to Critical)
+- **Deadline Date Picker**: Required field
+
+## Scripts
+
+```bash
+npm start      # Start the server
+npm run dev    # Start with Nodemon (auto-reload)
+npm run seed   # Seed database with sample data
+```
+
+## Upcoming Features
+
+- [ ] User authentication (bcrypt + JWT)
+- [ ] User model with generateToken() schema method
+- [ ] Protected routes with auth middleware
+- [ ] Login page frontend
+- [ ] Task consequence field
+- [ ] Task completion tracking
+
+## License
+
+ISC
