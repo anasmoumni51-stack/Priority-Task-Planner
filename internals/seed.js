@@ -3,7 +3,7 @@
 
 const mongoose = require('mongoose');
 require('dotenv').config();
-const Task = require('./models/Task');
+const Task = require('../models/Task');
 
 async function seedDatabase() {
   try {

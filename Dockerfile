@@ -7,8 +7,8 @@ WORKDIR /app
 # Copy package files first (for Docker cache optimization)
 COPY package.json package-lock.json ./
 
-# Install production dependencies only
-RUN npm install --production
+# Install all dependencies (including devDependencies for nodemon)
+RUN npm install
 
 # Copy the rest of the project code
 COPY . .

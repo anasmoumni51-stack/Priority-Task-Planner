@@ -1,7 +1,6 @@
 const express = require('express');
 const Task = require('../models/Task');
-const path = require('path');
-const validateTask = require('../models/Task').validateTask;            
+const path = require('path');          
 require('dotenv').config();              
 
 
