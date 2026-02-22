@@ -74,8 +74,32 @@ function displayTasks(tasks) {
     
     // Format date nicely if it exists
     let deadlineText = 'No deadline';
+    let remainingDays = '';
+    
     if (task.deadline) {
-      deadlineText = new Date(task.deadline).toLocaleDateString();
+      const deadlineDate = new Date(task.deadline);
+      deadlineText = deadlineDate.toLocaleDateString();
+      
+      // Calculate remaining days (date-only comparison)
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      deadlineDate.setHours(0, 0, 0, 0);
+      const daysRemaining = Math.ceil((deadlineDate - today) / (1000 * 60 * 60 * 24));
+      
+      // Determine urgency styling
+      if (daysRemaining < 0) {
+        remainingDays = `<span class="badge bg-danger">Overdue</span>`;
+      } else if (daysRemaining === 0) {
+        remainingDays = `<span class="badge bg-danger">Today</span>`;
+      } else if (daysRemaining === 1) {
+        remainingDays = `<span class="badge bg-danger">1 day left</span>`;
+      } else if (daysRemaining <= 3) {
+        remainingDays = `<span class="badge bg-danger">${daysRemaining}d left</span>`;
+      } else if (daysRemaining <= 7) {
+        remainingDays = `<span class="badge bg-warning">${daysRemaining}d left</span>`;
+      } else {
+        remainingDays = `<span class="badge bg-success">${daysRemaining}d left</span>`;
+      }
     }
     
     // Create task card HTML
@@ -88,17 +112,21 @@ function displayTasks(tasks) {
             <small class="text-muted">
               Category: ${task.category || 'None'} | 
               Priority: ${task.priority || '1'} | 
-              Project: ${task.project || 'None'} | 
               Deadline: ${deadlineText}
             </small>
           </div>
-          <div class="btn-group" role="group">
-            <button class="btn btn-sm btn-outline-primary" onclick="editTask('${task._id}')">
-              Edit
-            </button>
-            <button class="btn btn-sm btn-outline-danger" onclick="deleteTask('${task._id}')">
-              Delete
-            </button>
+          <div style="text-align: right;">
+            <div class="mb-2">
+              ${remainingDays}
+            </div>
+            <div class="btn-group" role="group">
+              <button class="btn btn-sm btn-outline-primary" onclick="editTask('${task._id}')">
+                Edit
+              </button>
+              <button class="btn btn-sm btn-outline-danger" onclick="deleteTask('${task._id}')">
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -127,9 +155,8 @@ async function addTask(event) {
     const newTask = {
       title: title,
       priority: parseInt(document.getElementById('priority').value),
-      category: document.getElementById('category').value.trim(),
+      category: document.getElementById('category').value,
       deadline: document.getElementById('deadline').value || null,
-      project: document.getElementById('project').value.trim(),
       description: document.getElementById('description').value.trim()
     };
     

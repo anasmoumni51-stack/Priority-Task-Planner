@@ -27,10 +27,11 @@
                 <h5>Add New Task</h5>
                 <form id="taskForm">
                     <div class="row g-3">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <input type="text" class="form-control" id="title" placeholder="Task Title" required>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
+                            <label for="priority" class="form-label">Priority</label>
                             <select class="form-select" id="priority">
                                 <option value="1">Low Priority</option>
                                 <option value="2" selected>Medium Priority</option>
@@ -39,14 +40,22 @@
                                 <option value="5">Critical</option>
                             </select>
                         </div>
-                        <div class="col-md-3">
-                            <input type="text" class="form-control" id="category" placeholder="Category (work, personal)">
+                        <div class="col-md-4">
+                            <label for="deadline" class="form-label">Deadline</label>
+                            <input type="date" class="form-control" id="deadline" required>
                         </div>
-                        <div class="col-md-6">
-                            <input type="date" class="form-control" id="deadline">
-                        </div>
-                        <div class="col-md-6">
-                            <input type="text" class="form-control" id="project" placeholder="Project Name">
+                        <div class="col-md-4">
+                            <label for="category" class="form-label">Category</label>
+                            <select class="form-select" id="category" required>
+                                <option value="" selected disabled>Select Category</option>
+                                <option value="work">Work</option>
+                                <option value="personal">Personal</option>
+                                <option value="shopping">Shopping</option>
+                                <option value="health">Health</option>
+                                <option value="education">Education</option>
+                                <option value="home">Home</option>
+                                <option value="other">Other</option>
+                            </select>
                         </div>
                         <div class="col-12">
                             <textarea class="form-control" id="description" rows="2" placeholder="Description"></textarea>

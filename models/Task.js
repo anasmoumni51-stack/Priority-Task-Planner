@@ -1,4 +1,4 @@
-// Import mongoose library to work with MongoDB
+const { required } = require('joi');
 const mongoose = require('mongoose');
 
 // Define a schema for tasks (like a blueprint)
@@ -23,12 +23,9 @@ const TaskSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
-  project: {
-    type: String,
-    trim: true
-  },
   deadline: {
-    type: Date
+    type: Date,
+    required: true
   },
   taskType: {
     type: String,
@@ -43,6 +40,8 @@ const TaskSchema = new mongoose.Schema({
   strict: false, // Allow additional fields for flexibility
   timestamps: true // Adds createdAt and updatedAt automatically
 });
+
+
 
 // Create a Task model based on the schema
 // This represents a collection in MongoDB called 'tasks'
