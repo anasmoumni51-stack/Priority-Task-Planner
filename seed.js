@@ -2,13 +2,13 @@
 // Run with: node seed.js
 
 const mongoose = require('mongoose');
-require('dotenv').config();
 const Task = require('./models/Task');
+const config = require('config');
 
 async function seedDatabase() {
   try {
     
-    await mongoose.connect(process.env.MONGODB_URI);
+    await mongoose.connect(config.get('db'));
     console.log(' Connected to MongoDB');
 
     await Task.deleteMany({});

@@ -1,8 +1,5 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const validateTask = require('../validators/TaskValidator');
-require('dotenv').config();
-const path = require('path');            
 const Task = require('../models/Task');
 
 const router = express.Router();
@@ -14,16 +11,13 @@ router.get('/', async (req, res) => {
     let filter = {};
     
     // If user provided category filter, add to filter
-    if (req.query.category) return filter.category = req.query.category;
-    
+    if (req.query.category) filter.category = req.query.category;
     
     // If user provided priority filter, add to filter
-    if (req.query.priority) return filter.priority = parseInt(req.query.priority);
-    
-    
+    if (req.query.priority) filter.priority = parseInt(req.query.priority);
     
     // Search by title (if search query provided)
-    if (req.query.search) return filter.title = { $regex: req.query.search, $options: 'i' }; // Case-insensitive search
+    if (req.query.search) filter.title = { $regex: req.query.search, $options: 'i' };
     
     
     // Get tasks from database using the filter

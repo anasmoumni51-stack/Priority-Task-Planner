@@ -213,7 +213,6 @@ async function editTask(taskId) {
   document.getElementById('description').value = task.description || '';
   document.getElementById('priority').value = task.priority || 2;
   document.getElementById('category').value = task.category || '';
-  document.getElementById('project').value = task.project || '';
   document.getElementById('deadline').value = task.deadline ? task.deadline.split('T')[0] : '';
   
   // Change form submit behavior to update
@@ -248,7 +247,6 @@ async function updateTask(event, taskId) {
       priority: parseInt(document.getElementById('priority').value),
       category: document.getElementById('category').value.trim(),
       deadline: document.getElementById('deadline').value || null,
-      project: document.getElementById('project').value.trim(),
       description: document.getElementById('description').value.trim()
     };
     

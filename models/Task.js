@@ -36,7 +36,6 @@ const TaskSchema = new mongoose.Schema({
   }
 }, { 
   strict: false, // Allow additional fields for flexibility
-  timestamps: true // Adds createdAt and updatedAt
 });
 
 
