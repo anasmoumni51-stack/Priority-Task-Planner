@@ -1,11 +1,11 @@
-# 📝 Task Planner with MongoDB
+# Task Planner with MongoDB
 
-A task planner web application built with **Node.js, Express, and MongoDB**. Features a modular architecture with separated routes, middleware, input validation (Joi), user authentication (bcrypt + JWT), security hardening, and Docker support.
+A task planner web application built with **Node.js, Express, and MongoDB**. Features a modular architecture with separated routes, middlewares, input validation for each route (Joi), user authentication (bcrypt + JWT), security hardening, and Docker Containers.
 
 ## Features
 
 - **Complete CRUD Operations**: Create, Read, Update, Delete tasks
-- **User Authentication**: Registration with bcrypt password hashing and JWT tokens
+- **User Authentication**: Registration with bcrypt password hashing and JsonWebTokens tokens
 - **Protected Routes**: Auth middleware verifying JWT on protected endpoints
 - **Input Validation**: Joi schema validation for tasks and users
 - **Security Middleware**: Helmet (HTTP headers), CORS (cross-origin), rate limiting (100 req/min)
@@ -241,9 +241,4 @@ npm run seed   # Seed database with sample data
 - [ ] Login endpoint
 - [ ] Login page frontend
 - [ ] Auth-protected task routes (per-user tasks)
-- [ ] Task consequence field
 - [ ] Task completion tracking
-
-## License
-
-ISC
