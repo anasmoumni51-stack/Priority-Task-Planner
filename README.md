@@ -1,16 +1,20 @@
 # 📝 Task Planner with MongoDB
 
-A task planner web application built with **Node.js, Express, and MongoDB**. Features a modular architecture with separated routes, middleware, input validation (Joi), and Docker support.
+A task planner web application built with **Node.js, Express, and MongoDB**. Features a modular architecture with separated routes, middleware, input validation (Joi), user authentication (bcrypt + JWT), security hardening, and Docker support.
 
 ## Features
 
 - **Complete CRUD Operations**: Create, Read, Update, Delete tasks
-- **Input Validation**: Joi schema validation for all task inputs
+- **User Authentication**: Registration with bcrypt password hashing and JWT tokens
+- **Protected Routes**: Auth middleware verifying JWT on protected endpoints
+- **Input Validation**: Joi schema validation for tasks and users
+- **Security Middleware**: Helmet (HTTP headers), CORS (cross-origin), rate limiting (100 req/min)
 - **Category Selector**: Dropdown with predefined categories (work, personal, shopping, health, education, home, other)
 - **Deadline Tracking**: Required deadline date with remaining days urgency indicator
 - **Advanced Filtering**: Search by title, filter by category and priority
 - **Statistics Dashboard**: Task counts, average priority, category breakdowns
 - **Error Handling Middleware**: Centralized error handling
+- **Configuration Management**: `config` package with environment-specific settings
 - **Dockerized**: Full Docker + Docker Compose setup for easy deployment
 - **Responsive UI**: Bootstrap-based interface
 
@@ -20,36 +24,47 @@ A task planner web application built with **Node.js, Express, and MongoDB**. Fea
 |-------|-----------|
 | **Backend** | Node.js + Express.js |
 | **Database** | MongoDB + Mongoose |
+| **Authentication** | bcrypt + JSON Web Tokens (JWT) |
 | **Validation** | Joi |
+| **Security** | Helmet, CORS, express-rate-limit |
+| **Configuration** | config (environment-based) |
 | **Frontend** | Vanilla JavaScript + HTML + Bootstrap |
-| **Environment** | dotenv |
 | **Containerization** | Docker + Docker Compose |
-| **Dev Tools** | Nodemon | config
+| **Dev Tools** | Nodemon |
 
 ## Project Architecture
 
 ```
 task-planner/
+├── config/
+│   ├── default.json                    # Default configuration
+│   ├── test.json                       # Test environment config
+│   └── custom-environment-variables.json # Env var mapping
 ├── models/
-│   ├── Task.js              # Mongoose Task schema
-│   └── User.js              # Mongoose User schema (WIP)
+│   ├── Task.js                         # Mongoose Task schema
+│   └── User.js                         # Mongoose User schema + JWT generation
 ├── routes/
-│   ├── tasks.js             # Task CRUD routes
-│   └── stats.js             # Statistics routes
+│   ├── tasks.js                        # Task CRUD routes
+│   ├── stats.js                        # Statistics routes
+│   └── user.js                         # User registration & profile routes
 ├── middleware/
-│   └── error.js             # Error handling middleware
+│   ├── auth.js                         # JWT authentication middleware
+│   ├── cors.js                         # CORS configuration
+│   ├── error.js                        # Error handling middleware
+│   └── ratelimit.js                    # Rate limiting middleware
 ├── validators/
-│   └── TaskValidator.js     # Joi validation for tasks
+│   ├── TaskValidator.js                # Joi validation for tasks
+│   └── userValidator.js                # Joi validation for users
 ├── public/
-│   ├── index.html           # Main UI
-│   └── app.js               # Frontend logic
-├── index.js                 # Express server entry point
-├── package.json             # Dependencies & scripts
-├── Dockerfile               # Docker image blueprint
-├── docker-compose.yml       # Docker orchestration (app + MongoDB)
-├── .dockerignore            # Files excluded from Docker
-├── .env                     # Environment variables
-└── .gitignore               # Files excluded from Git
+│   ├── index.html                      # Main UI
+│   └── app.js                          # Frontend logic
+├── index.js                            # Express server entry point
+├── seed.js                             # Database seeder script
+├── package.json                        # Dependencies & scripts
+├── Dockerfile                          # Docker image blueprint
+├── docker-compose.yml                  # Docker orchestration (app + MongoDB)
+├── .dockerignore                       # Files excluded from Docker
+└── .gitignore                          # Files excluded from Git
 ```
 
 ## Prerequisites
@@ -69,12 +84,22 @@ cd Priority-Task-Planner
 npm install
 ```
 
-**2. Environment configuration**
+**2. Configuration**
 
-Create a `.env` file in the root directory:
-```env
-MONGODB_URI=mongodb://localhost:27017/taskplanner
-PORT=3000
+The app uses the `config` package. Default settings are in `config/default.json`:
+```json
+{
+  "jwtPrivateKey": "unsecureKey",
+  "db": "mongodb://localhost:27017/taskplanner",
+  "port": "3000"
+}
+```
+
+To override with environment variables, set them as mapped in `config/custom-environment-variables.json`:
+```bash
+export TODO_jwtPrivateKey=yourSecretKey
+export MONGODB_URI=mongodb://localhost:27017/taskplanner
+export PORT=3000
 ```
 
 **3. Start the application**
@@ -109,13 +134,27 @@ Open your browser: `http://localhost:3000`
 
 ## API Endpoints
 
+### Tasks
+
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/api/tasks` | Get all tasks (with optional filtering) |
 | POST | `/api/tasks` | Create a new task (Joi validated) |
 | PUT | `/api/tasks/:id` | Update an existing task |
 | DELETE | `/api/tasks/:id` | Delete a task |
+
+### Statistics
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
 | GET | `/api/stats` | Get task statistics |
+
+### Users
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| POST | `/api/users` | No | Register a new user |
+| GET | `/api/users/me` | Yes | Get current user profile |
 
 ### Query Parameters for GET /api/tasks
 
@@ -125,7 +164,25 @@ Open your browser: `http://localhost:3000`
 | `category` | Filter by category |
 | `priority` | Filter by priority level (1-5) |
 
-## Database Schema
+## Authentication
+
+The app uses **bcrypt** for password hashing and **JWT** for token-based authentication.
+
+### Register a user
+```bash
+curl -X POST http://localhost:3000/api/users \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Anas", "email": "anas@gmail.com", "password": "Salam123"}'
+```
+The JWT token is returned in the `x-auth-token` response header.
+
+### Access a protected route
+```bash
+curl http://localhost:3000/api/users/me \
+  -H "x-auth-token: <your-token>"
+```
+
+## Database Schemas
 
 ### Task Model
 ```javascript
@@ -136,32 +193,30 @@ Open your browser: `http://localhost:3000`
   category:    String    (trimmed),
   deadline:    Date      (required),
   taskType:    String    (enum: work|personal|shopping|health|education|home|other),
-  createdAt:   Date,
-  updatedAt:   Date
+  createdAt:   Date
 }
 ```
 
-### Joi Validation (TaskValidator)
+### User Model
 ```javascript
 {
-  title:       string().min(3).max(50).required(),
-  description: string().max(500).allow(''),
-  priority:    number().integer().min(1).max(5),
-  category:    string().allow(''),
-  deadline:    date(),
-  taskType:    string().valid('work','personal','shopping','health','education','home','other').lowercase()
+  name:        String    (required, 2-50 chars),
+  email:       String    (required, unique, 5-255 chars),
+  password:    String    (required, hashed, 5-1024 chars),
+  isAdmin:     Boolean
 }
 ```
 
-## Middleware
+## Middleware Stack
 
-- **Error Handler** (`middleware/error.js`): Catches all unhandled errors and returns a 500 response
-- Routes are mounted as Express middleware in `index.js`:
-```javascript
-app.use('/api/tasks', tasks);
-app.use('/api/stats', stats);
-app.use(errorHandler);
-```
+| Middleware | File | Description |
+|-----------|------|-------------|
+| **JSON Parser** | built-in | `express.json()` — parses request bodies |
+| **CORS** | `middleware/cors.js` | Configured for localhost:3000, allows `x-auth-token` header |
+| **Helmet** | built-in | Sets secure HTTP headers |
+| **Rate Limiter** | `middleware/ratelimit.js` | 100 requests per minute per IP |
+| **Auth** | `middleware/auth.js` | Verifies JWT token, sets `req.user` |
+| **Error Handler** | `middleware/error.js` | Catches unhandled errors, returns 500 |
 
 ## Frontend Features
 
@@ -183,10 +238,9 @@ npm run seed   # Seed database with sample data
 
 ## Upcoming Features
 
-- [ ] User authentication (bcrypt + JWT)
-- [ ] User model with generateToken() schema method
-- [ ] Protected routes with auth middleware
+- [ ] Login endpoint
 - [ ] Login page frontend
+- [ ] Auth-protected task routes (per-user tasks)
 - [ ] Task consequence field
 - [ ] Task completion tracking
 
