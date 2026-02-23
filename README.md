@@ -172,7 +172,7 @@ The app uses **bcrypt** for password hashing and **JWT** for token-based authent
 ```bash
 curl -X POST http://localhost:3000/api/users \
   -H "Content-Type: application/json" \
-  -d '{"name": "Anas", "email": "anas@gmail.com", "password": "Salam123"}'
+  -d '{"name": "Name", "email": "email@email.com", "password": "passwordToBeEncrypted"}'
 ```
 The JWT token is returned in the `x-auth-token` response header.
 
