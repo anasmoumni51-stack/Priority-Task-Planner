@@ -1,7 +1,7 @@
 {
-  "name": "task-planner",
+  "name": "priority-task-project",
   "version": "1.0.0",
-  "description": "Simple Task Planner with MongoDB",
+  "description": "Simple Priority Task Project with MongoDB",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",

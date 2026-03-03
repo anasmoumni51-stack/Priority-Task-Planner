@@ -1,6 +1,6 @@
-# Task Planner with MongoDB
+# Priority Task Project with MongoDB
 
-A task planner web application built with **Node.js, Express, and MongoDB**. Features a modular architecture with separated routes, middlewares, input validation for each route (Joi), user authentication (bcrypt + JWT), security hardening, and Docker Containers.
+A priority task project web application built with **Node.js, Express, and MongoDB**. Features a modular architecture with separated routes, middlewares, input validation for each route (Joi), user authentication (bcrypt + JWT), security hardening, and Docker Containers.
 
 ## Features
 
