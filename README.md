@@ -35,7 +35,7 @@ A priority task project web application built with **Node.js, Express, and Mongo
 ## Project Architecture
 
 ```
-task-planner/
+priority-task-project/
 ├── config/
 │   ├── default.json                    # Default configuration
 │   ├── test.json                       # Test environment config
@@ -79,8 +79,8 @@ task-planner/
 
 **1. Clone and install dependencies**
 ```bash
-git clone https://github.com/anasmoumni51-stack/Priority-Task-Planner
-cd Priority-Task-Planner
+git clone https://github.com/anasmoumni51-stack/priority-task-project
+cd priority-task-project
 npm install
 ```
 

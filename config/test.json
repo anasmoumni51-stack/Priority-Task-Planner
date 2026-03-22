@@ -1,5 +1,5 @@
 {
-  "jwtPrivateKey": "1234",
+  "jwtPrivateKey": "testenvironement",
   "db": "mongodb://localhost/taskplanner-test",
   "port": "3001"
 }
