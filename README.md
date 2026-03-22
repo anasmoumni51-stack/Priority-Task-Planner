@@ -20,17 +20,17 @@ A priority task project web application built with **Node.js, Express, and Mongo
 
 ## Technology Stack
 
-| Layer | Technology |
-|-------|-----------|
-| **Backend** | Node.js + Express.js |
-| **Database** | MongoDB + Mongoose |
-| **Authentication** | bcrypt + JSON Web Tokens (JWT) |
-| **Validation** | Joi |
-| **Security** | Helmet, CORS, express-rate-limit |
-| **Configuration** | config (environment-based) |
-| **Frontend** | Vanilla JavaScript + HTML + Bootstrap |
-| **Containerization** | Docker + Docker Compose |
-| **Dev Tools** | Nodemon |
+| Layer                | Technology                            |
+| -------------------- | ------------------------------------- |
+| **Backend**          | Node.js + Express.js                  |
+| **Database**         | MongoDB + Mongoose                    |
+| **Authentication**   | bcrypt + JSON Web Tokens (JWT)        |
+| **Validation**       | Joi                                   |
+| **Security**         | Helmet, CORS, express-rate-limit      |
+| **Configuration**    | config (environment-based)            |
+| **Frontend**         | Vanilla JavaScript + HTML + Bootstrap |
+| **Containerization** | Docker + Docker Compose               |
+| **Dev Tools**        | Nodemon                               |
 
 ## Project Architecture
 
@@ -78,6 +78,7 @@ priority-task-project/
 ### Option 1: Local Setup
 
 **1. Clone and install dependencies**
+
 ```bash
 git clone https://github.com/anasmoumni51-stack/priority-task-project
 cd priority-task-project
@@ -87,15 +88,27 @@ npm install
 **2. Configuration**
 
 The app uses the `config` package. Default settings are in `config/default.json`:
+
 ```json
 {
-  "jwtPrivateKey": "unsecureKey",
+  "jwtPrivateKey": "developpementenvironement",
   "db": "mongodb://localhost:27017/taskplanner",
   "port": "3000"
 }
 ```
 
+Test environment settings are in `config/test.json`:
+
+```json
+{
+  "jwtPrivateKey": "testenvironement",
+  "db": "mongodb://localhost/taskplanner-test",
+  "port": "3001"
+}
+```
+
 To override with environment variables, set them as mapped in `config/custom-environment-variables.json`:
+
 ```bash
 export TODO_jwtPrivateKey=yourSecretKey
 export MONGODB_URI=mongodb://localhost:27017/taskplanner
@@ -103,6 +116,7 @@ export PORT=3000
 ```
 
 **3. Start the application**
+
 ```bash
 # Development mode (auto-restart with Nodemon)
 npm run dev
@@ -114,6 +128,7 @@ npm start
 ### Option 2: Docker Setup
 
 Make sure Docker Desktop is running, then:
+
 ```bash
 # Build and start containers
 docker compose up --build
@@ -136,47 +151,50 @@ Open your browser: `http://localhost:3000`
 
 ### Tasks
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/tasks` | Get all tasks (with optional filtering) |
-| POST | `/api/tasks` | Create a new task (Joi validated) |
-| PUT | `/api/tasks/:id` | Update an existing task |
-| DELETE | `/api/tasks/:id` | Delete a task |
+| Method | Endpoint         | Description                             |
+| ------ | ---------------- | --------------------------------------- |
+| GET    | `/api/tasks`     | Get all tasks (with optional filtering) |
+| POST   | `/api/tasks`     | Create a new task (Joi validated)       |
+| PUT    | `/api/tasks/:id` | Update an existing task                 |
+| DELETE | `/api/tasks/:id` | Delete a task                           |
 
 ### Statistics
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/stats` | Get task statistics |
+| Method | Endpoint     | Description         |
+| ------ | ------------ | ------------------- |
+| GET    | `/api/stats` | Get task statistics |
 
 ### Users
 
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| POST | `/api/users` | No | Register a new user |
-| GET | `/api/users/me` | Yes | Get current user profile |
+| Method | Endpoint        | Auth | Description              |
+| ------ | --------------- | ---- | ------------------------ |
+| POST   | `/api/users`    | No   | Register a new user      |
+| GET    | `/api/users/me` | Yes  | Get current user profile |
 
 ### Query Parameters for GET /api/tasks
 
-| Parameter | Description |
-|-----------|-------------|
-| `search` | Search in title (case-insensitive) |
-| `category` | Filter by category |
-| `priority` | Filter by priority level (1-5) |
+| Parameter  | Description                        |
+| ---------- | ---------------------------------- |
+| `search`   | Search in title (case-insensitive) |
+| `category` | Filter by category                 |
+| `priority` | Filter by priority level (1-5)     |
 
 ## Authentication
 
 The app uses **bcrypt** for password hashing and **JWT** for token-based authentication.
 
 ### Register a user
+
 ```bash
 curl -X POST http://localhost:3000/api/users \
   -H "Content-Type: application/json" \
   -d '{"name": "Name", "email": "email@email.com", "password": "passwordToBeEncrypted"}'
 ```
+
 The JWT token is returned in the `x-auth-token` response header.
 
 ### Access a protected route
+
 ```bash
 curl http://localhost:3000/api/users/me \
   -H "x-auth-token: <your-token>"
@@ -185,6 +203,7 @@ curl http://localhost:3000/api/users/me \
 ## Database Schemas
 
 ### Task Model
+
 ```javascript
 {
   title:       String    (required, trimmed),
@@ -198,6 +217,7 @@ curl http://localhost:3000/api/users/me \
 ```
 
 ### User Model
+
 ```javascript
 {
   name:        String    (required, 2-50 chars),
@@ -209,14 +229,14 @@ curl http://localhost:3000/api/users/me \
 
 ## Middleware Stack
 
-| Middleware | File | Description |
-|-----------|------|-------------|
-| **JSON Parser** | built-in | `express.json()` — parses request bodies |
-| **CORS** | `middleware/cors.js` | Configured for localhost:3000, allows `x-auth-token` header |
-| **Helmet** | built-in | Sets secure HTTP headers |
-| **Rate Limiter** | `middleware/ratelimit.js` | 100 requests per minute per IP |
-| **Auth** | `middleware/auth.js` | Verifies JWT token, sets `req.user` |
-| **Error Handler** | `middleware/error.js` | Catches unhandled errors, returns 500 |
+| Middleware        | File                      | Description                                                 |
+| ----------------- | ------------------------- | ----------------------------------------------------------- |
+| **JSON Parser**   | built-in                  | `express.json()` — parses request bodies                    |
+| **CORS**          | `middleware/cors.js`      | Configured for localhost:3000, allows `x-auth-token` header |
+| **Helmet**        | built-in                  | Sets secure HTTP headers                                    |
+| **Rate Limiter**  | `middleware/ratelimit.js` | 100 requests per minute per IP                              |
+| **Auth**          | `middleware/auth.js`      | Verifies JWT token, sets `req.user`                         |
+| **Error Handler** | `middleware/error.js`     | Catches unhandled errors, returns 500                       |
 
 ## Frontend Features
 
